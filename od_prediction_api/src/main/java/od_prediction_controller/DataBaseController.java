@@ -15,8 +15,8 @@ public class DataBaseController {
 //User: EOC_ARTIFICIAL_DATA
 //Pass: EOC_ARTIFICIAL_DATA
 
-		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@146.250.183.92:1521:EOCDB", "EOC_ARTIFICIAL_DATA",
-				"EOC_ARTIFICIAL_DATA")) {
+		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@146.250.183.92:1521:EOCDB",
+				"EOC_ARTIFICIAL_DATA", "EOC_ARTIFICIAL_DATA")) {
 
 			if (conn != null) {
 				System.out.println("Connected to the database!");
@@ -31,11 +31,11 @@ public class DataBaseController {
 		}
 
 	}
-	
+
 	private DataBaseController() {
 		try {
-			this.conn = DriverManager.getConnection("jdbc:oracle:thin:@146.250.183.92:1521:EOCDB", "EOC_ARTIFICIAL_DATA",
-					"EOC_ARTIFICIAL_DATA");
+			this.conn = DriverManager.getConnection("jdbc:oracle:thin:@146.250.183.92:1521:EOCDB",
+					"EOC_ARTIFICIAL_DATA", "EOC_ARTIFICIAL_DATA");
 
 			if (conn != null) {
 				System.out.println("Connected to the database!");
@@ -49,10 +49,10 @@ public class DataBaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Connection getConnection() {
 		return new DataBaseController().conn;
-		
+
 	}
 
 }

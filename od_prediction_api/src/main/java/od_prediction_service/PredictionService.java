@@ -13,34 +13,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Service
-public class ComparisonListService {
+public class PredictionService {
 
-	List<ComparisonObject> comparisonList;
+	List<ComparisonObject> comparisonPredictionList;
+	List<ComparisonObject> futurePredictionList;
+	ComparisonObject currentPrediction;
 	Connection conn;
 	static Statement statement = null;
 	static ResultSet result = null;
 
-	private ComparisonListService() {
+	private PredictionService() {
 		try {
 			this.conn = DataBaseController.getConnection();
-			this.comparisonList = new ArrayList<ComparisonObject>();
-
+			this.comparisonPredictionList = new ArrayList<ComparisonObject>();
+			this.futurePredictionList = new ArrayList<ComparisonObject>();
 			// Creates a Statement object for sending SQL statements to the database
 			this.statement = this.conn.createStatement();
 
-			// Executes the given SQL statement, which returns a single ResultSet object
-			this.result = this.statement.executeQuery(
-					"SELECT DATA_ID,TIMESTAMP,REAL_ORDER_VOLUME,PREDICTED_ORDER_VOLUME, UPPER_ESTIMATE from PREDICTIONS ORDER BY DATA_ID");
-
-			while (this.result.next()) {
-				String date = this.result.getString("TIMESTAMP");
-				double real_order_volume = this.result.getDouble("REAL_ORDER_VOLUME");
-				double predicted_order_volume = this.result.getDouble("PREDICTED_ORDER_VOLUME");
-				double upper_estimate = this.result.getDouble("UPPER_ESTIMATE");
-				addElement(date, (predicted_order_volume + upper_estimate), real_order_volume);
-
-			}
-			this.conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,12 +37,92 @@ public class ComparisonListService {
 
 	}
 
-	public void addElement(String date, double predictedValue, double actualValue) {
-		this.comparisonList.add(new ComparisonObject(date, predictedValue, actualValue));
+	public List<ComparisonObject> searchComparisonList() {
+
+		// Executes the given SQL statement, which returns a single ResultSet object
+		try {
+			this.result = this.statement.executeQuery(
+					"SELECT DATA_ID,TIMESTAMP,PREDICTED_VALUE,ACTUAL_VALUE  from PREDICTION ORDER BY DATA_ID");
+
+			while (this.result.next()) {
+				String date = this.result.getString("TIMESTAMP");
+				double real_order_volume = this.result.getDouble("ACTUAL_VALUE");
+				double predicted_order_volume = this.result.getDouble("PREDICTED_VALUE");
+				addElement(this.comparisonPredictionList, date, predicted_order_volume, real_order_volume);
+
+			}
+			this.conn.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return this.comparisonPredictionList;
+
 	}
 
-	public static List<ComparisonObject> getList() {
-		return new ComparisonListService().comparisonList;
+	public List<ComparisonObject> searchPredictionList() {
+
+		// Executes the given SQL statement, which returns a single ResultSet object
+		try {
+			this.result = this.statement
+					.executeQuery("SELECT DATA_ID,TIMESTAMP,PREDICTED_VALUE  from PREDICTION_FUTURE ORDER BY DATA_ID");
+
+			while (this.result.next()) {
+				String date = this.result.getString("TIMESTAMP");
+				double real_order_volume = 0;
+				double predicted_order_volume = this.result.getDouble("PREDICTED_VALUE");
+				addElement(this.futurePredictionList, date, predicted_order_volume, real_order_volume);
+
+			}
+			this.conn.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return this.futurePredictionList;
+
+	}
+
+	public ComparisonObject searchCurrentPrediction() {
+
+		// Executes the given SQL statement, which returns a single ResultSet object
+		try {
+			this.result = this.statement
+					.executeQuery("select * from (select * from PREDICTION_FUTURE order by data_id ASC) where rownum = 1");
+
+			if (this.result.next()) {
+				String date = this.result.getString("TIMESTAMP");
+				double real_order_volume = 0;
+				double predicted_order_volume = this.result.getDouble("PREDICTED_VALUE");
+				this.currentPrediction = new ComparisonObject(date, predicted_order_volume, real_order_volume);
+
+			}
+			this.conn.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return this.currentPrediction;
+
+	}
+
+	public void addElement(List<ComparisonObject> list, String date, double predictedValue, double actualValue) {
+		list.add(new ComparisonObject(date, predictedValue, actualValue));
+	}
+
+	public static List<ComparisonObject> getComparisonList() {
+		return new PredictionService().searchComparisonList();
+	}
+
+	public static List<ComparisonObject> getPredictionList() {
+		return new PredictionService().searchPredictionList();
+	}
+
+	public static ComparisonObject getCurrentPrediction() {
+		return new PredictionService().searchCurrentPrediction();
 	}
 
 }

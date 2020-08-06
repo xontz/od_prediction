@@ -9,45 +9,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import od_prediction_model.ComparisonObject;
-import od_prediction_service.ComparisonListService;
+import od_prediction_model.Item;
+import od_prediction_service.AccuracyService;
+import od_prediction_service.PredictionService;
 
 @RestController
 public class PredictionController {
 
-	private ComparisonListService comparisonList;
+	private PredictionService comparisonList;
 
 	@GetMapping(path = "/od_prediction/getCompPrediction")
 	public ResponseEntity<List<ComparisonObject>> getCompPrediction() {
 
-		return ResponseEntity.ok(ComparisonListService.getList());
+		return ResponseEntity.ok(PredictionService.getComparisonList());
 	}
-	
+
 	@GetMapping(path = "/od_prediction/getFuturePrediction")
 	public ResponseEntity<List<ComparisonObject>> getFuturePrediction() {
 
-		return ResponseEntity.ok(ComparisonListService.getList());
+		return ResponseEntity.ok(PredictionService.getPredictionList());
 	}
 
-	
 	@GetMapping(path = "/od_prediction/getCurrentPrediction")
-	public ResponseEntity<List<ComparisonObject>> getCurrentPrediction() {
+	public ResponseEntity<ComparisonObject> getCurrentPrediction() {
 
-		return ResponseEntity.ok(ComparisonListService.getList());
+		return ResponseEntity.ok(PredictionService.getCurrentPrediction());
 	}
 
-	
 	@GetMapping(path = "/od_prediction/getAccuracy")
-	public ResponseEntity<String> getAccuracy() {
+	public ResponseEntity<Item> getAccuracy() {
 
-		return ResponseEntity.ok("80");
+		return ResponseEntity.ok(AccuracyService.getAccuracy());
 	}
 
-	
 	@GetMapping(path = "/od_prediction/getPopItems")
 	public ResponseEntity<String> getPopItems() {
 
 		return ResponseEntity.ok("PO_IPHONE");
 	}
-
 
 }

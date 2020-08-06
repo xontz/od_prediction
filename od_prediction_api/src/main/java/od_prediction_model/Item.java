@@ -1,20 +1,33 @@
 package od_prediction_model;
 
 public class Item {
-	
-	private String nome;
-	
-	public String getNome() {
-		return nome;
+
+	private String name;
+	private String value;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Item(String name, String value) {
+		this.name = name;
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public Item(String nome) {
-		this.nome = nome;
+		this.name = nome;
 	}
-	
 
 }
