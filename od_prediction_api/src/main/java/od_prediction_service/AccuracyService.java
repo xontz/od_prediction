@@ -39,7 +39,7 @@ public class AccuracyService {
 				this.totalPrediction = this.result.getDouble(1);
 
 			}
-			this.result = this.statement.executeQuery("select * from PREDICTION where PREDICTED_VALUE");
+			this.result = this.statement.executeQuery("select * from PREDICTION");
 
 			while (this.result.next()) {
 				double tempPredictedValue = this.result.getDouble("PREDICTED_VALUE");
