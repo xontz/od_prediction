@@ -44,7 +44,20 @@ public class AccuracyService {
 			while (this.result.next()) {
 				double tempPredictedValue = this.result.getDouble("PREDICTED_VALUE");
 				double tempActualValue = this.result.getDouble("ACTUAL_VALUE");
-				if ((tempPredictedValue - tempActualValue) <= (0.3 * tempActualValue)) {
+				
+				/* 
+				* O aloritmo por padrao nos da uma janela de erro (linhas azul claro) que é em media 15% de margem pro valor previsto por ele.
+				* Se nós considerassemos o valor previsto pelo algoritmo e usassemos a margem sup. e inf. pra medir acuracia -> 93% de acuracia.
+				*
+				*Porem o que estamos fazendo é salvar no bd justamente a estimativa superior (esses 15% a mais que o algoritmo nos dá).
+				* pra então, analisarmos se o dado real está numa janela de 30% desse valor. O resultado -> 96% de acuracia.
+				*
+				* Não seria melhor usar logo a janela de erro dada pelo algoritmo pra medir a acurácia, inves de propor uma janela fixa de 30%?
+				*De qualquer forma, segue a implementação usando o limite superior e uma janela fixa de 30%
+				*/
+				
+				//if ((tempPredictedValue - tempActualValue) <= (0.3 * tempActualValue)) {
+				if (0.7 * tempActualValue <= tempPredictedValue && tempPredictedValue <= 1.3 * tempActualValue )
 					this.sucessRate++;
 				}
 
