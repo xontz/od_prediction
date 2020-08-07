@@ -2,9 +2,11 @@ package od_prediction_controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import od_prediction_model.ComparisonObject;
@@ -12,7 +14,6 @@ import od_prediction_model.Item;
 import od_prediction_service.AccuracyService;
 import od_prediction_service.PredictionService;
 import od_prediction_service.PopularItemsService;
-
 
 @RestController
 public class PredictionController {
