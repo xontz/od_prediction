@@ -39,7 +39,7 @@ public class AccuracyService {
 				this.totalPrediction = this.result.getDouble(1);
 
 			}
-			this.result = this.statement.executeQuery("select * from PREDICTION");
+			this.result = this.statement.executeQuery("select * from PREDICTION where PREDICTED_VALUE");
 
 			while (this.result.next()) {
 				double tempPredictedValue = this.result.getDouble("PREDICTED_VALUE");
@@ -48,8 +48,6 @@ public class AccuracyService {
 				if ((tempActualValue * 0.7 < tempPredictedValue) && (tempPredictedValue < tempActualValue * 1.3))
 					this.sucessRate++;
 				}
-
-			}
 			this.conn.close();
 
 		} catch (SQLException e) {
