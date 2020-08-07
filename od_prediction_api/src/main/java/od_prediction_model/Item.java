@@ -2,32 +2,32 @@ package od_prediction_model;
 
 public class Item {
 
+	private String id;
 	private String name;
-	private String value;
 
 	public String getName() {
-		return name;
+		return id;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.id = name;
 	}
 
 	public Item(String name, String value) {
-		this.name = name;
-		this.value = value;
+		this.id = name;
+		this.name = value;
 	}
 
 	public String getValue() {
-		return value;
+		return name;
 	}
 
 	public void setValue(String value) {
-		this.value = value;
+		this.name = value;
 	}
 
 	public Item(String nome) {
-		this.name = nome;
+		this.id = nome;
 	}
 
 }
