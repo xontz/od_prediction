@@ -45,9 +45,10 @@ public class AccuracyService {
 				double tempPredictedValue = this.result.getDouble("PREDICTED_VALUE");
 				double tempActualValue = this.result.getDouble("ACTUAL_VALUE");
 				//if ((tempPredictedValue - tempActualValue) <= (0.3 * tempActualValue)) {
-				if ((tempActualValue * 0.7 < tempPredictedValue) && (tempPredictedValue < tempActualValue * 1.3))
+				if ((tempActualValue * 0.7 < tempPredictedValue) && (tempPredictedValue < tempActualValue * 1.3)){
 					this.sucessRate++;
 				}
+			}
 			this.conn.close();
 
 		} catch (SQLException e) {
