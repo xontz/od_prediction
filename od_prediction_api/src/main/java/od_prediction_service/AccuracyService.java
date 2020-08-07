@@ -42,11 +42,10 @@ public class AccuracyService {
 			this.result = this.statement.executeQuery("select * from PREDICTION");
 
 			while (this.result.next()) {
-				double upperBound = this.result.getDouble("PREDICTED_VALUE_UPPER");
-				double lowerBound = this.result.getDouble("PREDICTED_VALUE_LOWER")
+				double tempPredictedValue = this.result.getDouble("PREDICTED_VALUE");
 				double tempActualValue = this.result.getDouble("ACTUAL_VALUE");
-				
-				if (lowerBound <= tempActualValue && tempActualValue <= upperBound)
+				//if ((tempPredictedValue - tempActualValue) <= (0.3 * tempActualValue)) {
+				if ((tempActualValue * 0.7 < tempPredictedValue) && (tempPredictedValue < tempActualValue * 1.3))
 					this.sucessRate++;
 				}
 
