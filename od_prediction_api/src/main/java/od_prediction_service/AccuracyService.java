@@ -61,5 +61,4 @@ public class AccuracyService {
 	public static Item getAccuracy() {
 		return new Item("accuracy", "" + new AccuracyService().calculateAccuracy());
 	}
-
 }
