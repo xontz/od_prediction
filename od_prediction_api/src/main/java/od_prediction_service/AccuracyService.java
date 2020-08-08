@@ -44,8 +44,11 @@ public class AccuracyService {
 			while (this.result.next()) {
 				double tempPredictedValue = this.result.getDouble("PREDICTED_VALUE");
 				double tempActualValue = this.result.getDouble("ACTUAL_VALUE");
+				double tempLower = this.result.getDouble("PREDICTED_VALUE_LOWER");
+				double tempUpper = this.result.getDouble("PREDICTED_VALUE_UPPER");
+				
 				//if ((tempPredictedValue - tempActualValue) <= (0.3 * tempActualValue)) {
-				if ((tempActualValue * 0.7 < tempPredictedValue) && (tempPredictedValue < tempActualValue * 1.3)){
+				if ((tempLower <= tempActualValue) && (tempActualValue <= tempUpper)){
 					this.sucessRate++;
 				}
 			}
