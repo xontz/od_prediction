@@ -42,7 +42,7 @@ public class PredictionService {
 		// Executes the given SQL statement, which returns a single ResultSet object
 		try {
 			this.result = this.statement.executeQuery(
-					"SELECT DATA_ID,TIMESTAMP,PREDICTED_VALUE,ACTUAL_VALUE  from PREDICTION ORDER BY DATA_ID");
+					"SELECT DATA_ID,TIMESTAMP,PREDICTED_VALUE,ACTUAL_VALUE  from (select * from PREDICTION order by data_id DESC) WHERE ROWNUM <= 365");
 
 			while (this.result.next()) {
 				String date = this.result.getString("TIMESTAMP");
@@ -89,8 +89,8 @@ public class PredictionService {
 
 		// Executes the given SQL statement, which returns a single ResultSet object
 		try {
-			this.result = this.statement
-					.executeQuery("select * from (select * from PREDICTION_FUTURE order by data_id ASC) where rownum = 1");
+			this.result = this.statement.executeQuery(
+					"select * from (select * from PREDICTION_FUTURE order by data_id ASC) where rownum = 1");
 
 			if (this.result.next()) {
 				String date = this.result.getString("TIMESTAMP");
